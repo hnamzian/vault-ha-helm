@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.vault1_cluster_ip.name }}
+  labels:
+    app: {{ .Values.VAULT_1_APP_NAME }}
+spec:
+  type: ClusterIP
+  selector:
+    app: {{ .Values.VAULT_1_APP_NAME }}
+  ports:
+  - port: 8200
+    targetPort: 8200
+    name: vault-1-api
+  - port: 8201
+    targetPort: 8201
+    name: vault-1-cluster

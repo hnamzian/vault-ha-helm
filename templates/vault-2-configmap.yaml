@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.vault2_configmap.name }}
+  labels:
+    app: {{ .Values.VAULT_2_APP_NAME }}
+data:
+  vault-config.hcl: |
+    storage "raft" {
+      path    = "/vault/raft"
+      node_id = "vault_2"
+      retry_join {
+        leader_api_addr = "http://{{ .Values.vault1_cluster_ip.name }}:8200"
+      }
+    }
+    listener "tcp" {
+      address = "0.0.0.0:8200"
+      cluster_address = "0.0.0.0:8201"
+      tls_disable = true
+    }
+    ui = true
+    disable_mlock = true
+    api_addr = "http://{{ .Values.vault2_cluster_ip.name }}:8200"
+    cluster_addr = "http://{{ .Values.vault2_cluster_ip.name }}:8201"

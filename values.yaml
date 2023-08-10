@@ -1,0 +1,34 @@
+VAULT_1_APP_NAME: vault-1
+VAULT_2_APP_NAME: vault-2
+VAULT_3_APP_NAME: vault-3
+
+image:
+  name: vault
+  tag: 1.13.3
+
+vault1_pvc:
+  name: vault1-raft-persistent-volume-claim
+
+vault2_pvc:
+  name: vault2-raft-persistent-volume-claim
+
+vault3_pvc:
+  name: vault3-raft-persistent-volume-claim
+
+vault1_cluster_ip:
+  name: vault-1-cluster-ip-service
+
+vault2_cluster_ip:
+  name: vault-2-cluster-ip-service
+
+vault3_cluster_ip:
+  name: vault-3-cluster-ip-service
+
+vault1_configmap:
+  name: vault-1-config
+
+vault2_configmap:
+  name: vault-2-config
+
+vault3_configmap:
+  name: vault-3-config

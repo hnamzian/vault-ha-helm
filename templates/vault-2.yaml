@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vault-2-deployment
+  labels:
+    app: {{ .Values.VAULT_2_APP_NAME }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.VAULT_2_APP_NAME }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.VAULT_2_APP_NAME }}
+    spec:
+      containers:
+      - name: vault-2
+        image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
+        ports:
+        - containerPort: 8200
+        - containerPort: 8201
+        env:
+        - name: VAULT_ADDR
+          value: http://127.0.0.1:8200
+        - name: ROOT_TOKEN_PATH
+          value: /vault/file/.root_token
+        volumeMounts:
+          - name: config-volume
+            mountPath: /vault/config
+          - name: raft-volume
+            mountPath: /vault/raft
+        command: ["vault", "server", "-config=/vault/config/vault-config.hcl"]
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ .Values.vault2_configmap.name }}
+        - name: raft-volume
+          persistentVolumeClaim:
+            claimName: {{ .Values.vault2_pvc.name }}
+
+  
